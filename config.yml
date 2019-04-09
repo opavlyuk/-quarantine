@@ -1,0 +1,6 @@
+watcher:
+  watch_dir: /home/nebo/watch_dir
+
+celery_app:
+  broker: redis://localhost:6379/0
+  backend: redis://localhost:6379/0
