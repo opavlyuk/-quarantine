@@ -1,8 +1,7 @@
 import yaml
 import os
-from pathlib import Path
 
-DEFAULT_CFG = os.path.join(str(Path.home()), 'configs', 'config.yml')
+DEFAULT_CFG = os.path.join('/', 'config.yml')
 
 
 def get_config(cfg_path=None):
@@ -10,3 +9,6 @@ def get_config(cfg_path=None):
     with open(cfg_path) as f:
         cfg = yaml.safe_load(f)
     return cfg
+
+
+config = get_config()

@@ -1,15 +1,19 @@
+#!/usr/bin/env python
 import os
+import sys
 
 import asyncio
 import aionotify
 
-from utils.config_manager import get_config
-from utils import logger
-from celery_app.tasks import check_code
+sys.path.append(os.getcwd())  # Ugly workaround
+from src.utils.config_manager import config
+from src.utils.log import logger
+from src.celery_app.tasks import check_code
+from src.celery_app.application import app
 
 if __name__ == '__main__':
     # Setup the watcher
-    config = get_config()["watcher"]
+    config = config["watcher"]
     watch_dir = config["watch_dir"]
     watcher = aionotify.Watcher()
     watcher.watch(path=watch_dir, flags=aionotify.Flags.CLOSE_WRITE)

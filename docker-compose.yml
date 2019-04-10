@@ -1,0 +1,15 @@
+version: '3.3'
+services:
+  watcher:
+    build: .
+    volumes:
+      - /watch_dir:/watch_dir:ro
+      - /results:/results
+      - /var/log/quarantine:/var/log/quarantine
+      - /var/run/quarantine:/var/run/quarantine
+    depends_on:
+      - redis
+  redis:
+    image: "redis:alpine"
+    expose:
+      - "6379"

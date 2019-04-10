@@ -1,6 +1,8 @@
 watcher:
-  watch_dir: /home/nebo/watch_dir
+  watch_dir: /watch_dir
+  results_dir: /results
+  log_dir: /var/log/quarantine
 
 celery_app:
-  broker: redis://localhost:6379/0
-  backend: redis://localhost:6379/0
+  broker: redis://redis:6379/0
+  backend: redis://redis:6379/0
