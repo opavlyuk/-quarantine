@@ -25,6 +25,7 @@ By default, writes captured filename to log, specified ``config.yml``.
 6. Install requirement ``pip install -r requirements.txt``
 7. Run celery worker ``celery worker -A src.celery_app.application -l DEBUG --time-limit=3 --max-memory-per-child=30000 --logfile="/var/log/quarantine/%n%I.log" -D``
 8. Run monitoring script ``python src/watcher.py``
+9. To stop celery ``celery -A src.celery_app.application control shutdown``
 
 ## TODO
 1. Improve README
