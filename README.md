@@ -14,3 +14,9 @@ By default, writes captured filename to log, specified ``config.yml``.
 3. Make sure, that ``watch_dir`` and ``results`` catalogues from ``config.yml`` exist in your system. 
 2. ``docker-compose build``
 3. ``docker-compose up``
+
+## TODO
+1. Improve README
+2. Set uid and gid for celery worker
+3. Investigate the best approach to save and report callback results
+4. Improve celery workers configuration
