@@ -20,7 +20,7 @@ By default, writes captured filename to log, specified ``config.yml``.
 1. ``git clone git@github.com:opavlyuk/quarantine.git && cd quarantine``.
 2. Install and run [redis](https://redis.io/topics/quickstart) or use docker ``docker run -d -p 6379:6379 redis``.
 3. Configure ``config.yml``.
-4. Make sure, that all catalogues, configured in ``config.yml`` exist in your system.
+4. Make sure, that all catalogues, configured in ``config.yml`` exist in your system and have proper permissions.
 5. Create and activate virtual environment with python3.7, e.g. ``python -m venv venv && source venv/bin/activate``.
 6. Install requirement ``pip install -r requirements.txt``
 7. Run celery worker ``celery worker -A src.celery_app.application -l DEBUG --time-limit=3 --max-memory-per-child=30000 --logfile="/var/log/quarantine/%n%I.log" -D``
