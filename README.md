@@ -12,8 +12,7 @@ By default, writes captured filename to log, specified ``config.yml``.
 ### Dockerized usage (Recommended)
 1. Install ``docker`` (https://docs.docker.com/install/).
 2. ``git clone git@github.com:opavlyuk/quarantine.git && cd quarantine``
-3. Make sure, that ``watch_dir`` and ``results`` catalogues from ``config.yml`` exist in your system. 
-4. Make sure, that settings in docker-compose.yml and config.yml are the same.
+3. Make sure, to set all volumes in docker-compose.yml ([howto](https://docs.docker.com/compose/compose-file/#volumes)).
 5. ``docker-compose build``
 6. ``docker-compose up``
 
