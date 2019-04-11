@@ -1,8 +1,8 @@
 # quarantine
 ``quarantine`` is a tool for tracking file writes and executing callbacks.
 
-Depends on [inotify](http://man7.org/linux/man-pages/man7/inotify.7.html).
-Python3.7 required.
+Requires GNU\Linux or FreeBSD. Depends on [inotify](http://man7.org/linux/man-pages/man7/inotify.7.html).
+Python 3.7 required.
 
 It tracks write to file in catalogue, set in ``config.yml`` and run callback, specified in ``quarantine/src/celery_app/tasks.py:check_code``.
 
