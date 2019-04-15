@@ -6,3 +6,4 @@ watcher:
 celery_app:
   broker: redis://redis:6379/0
   backend: redis://redis:6379/0
+  task_soft_time_limit: 1
