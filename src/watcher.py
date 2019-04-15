@@ -9,7 +9,6 @@ sys.path.append(os.getcwd())  # Ugly workaround
 from src.utils.config_manager import config
 from src.utils.log import logger
 from src.celery_app.tasks import check_code
-from src.celery_app.application import app
 
 if __name__ == '__main__':
     # Setup the watcher
