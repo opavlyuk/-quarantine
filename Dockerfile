@@ -14,5 +14,5 @@ COPY ./config.yml /config.yml
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Run app.py when the container launches
-CMD celery worker -A src.celery_app.application -l DEBUG --time-limit=3 --max-memory-per-child=30000 --logfile="/var/log/quarantine/%n%I.log" --detach && python src/watcher.py
+CMD celery worker -A src.celery_app.application -l DEBUG  --logfile="/var/log/quarantine/%n%I.log" -D  && python src/watcher.py
 
