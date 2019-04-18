@@ -4,6 +4,7 @@ import ast
 from src.helpers.reporting import new_out_msg
 from src.learnpy_checks.checker import ScriptVisitor
 
+SYNTAX_ERR = 1
 VAR_NOT_SET = 2
 VAR_CHANGED = 3
 VAR_NOT_CHANGED = 4
@@ -17,9 +18,8 @@ def check_script(in_msg):
     try:
         tree = ast.parse(code)
     except SyntaxError as e:
-        return {"task_id": in_msg["task_id"],
-                "code": 1,
-                "info": str(e)}
+        return new_out_msg(in_msg["user_id"], in_msg["task_id"],
+                           code=SYNTAX_ERR, info=str(e))
 
     main_visitor = ScriptVisitor()
     main_visitor.visit(tree)
