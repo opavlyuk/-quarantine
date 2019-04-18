@@ -1,20 +1,25 @@
 # -*- coding: utf-8 -*-
-import os
-
 import ast
+
+from src.helpers.reporting import new_out_msg
 from src.learnpy_checks.checker import ScriptVisitor
-from src.learnpy_checks.helpers import set_error, set_success
-from src.utils.config_manager import config
-from src.utils.log import logger
+
+VAR_NOT_SET = 2
+VAR_CHANGED = 3
+VAR_NOT_CHANGED = 4
+VAR_REQ_TYPE_STR = 5
+VAR_REQ_LEN = 6
+FUNC_NOT_CALLED = 7
 
 
-def check_script(file_name):
-    logger.debug(f"open file {file_name}")
-    f = open(file_name, "r")
-    out_dir = config["watcher"]["results_dir"]
-    out_file_path = os.path.join(out_dir, 'check_result.json')
-
-    tree = ast.parse(f.read())
+def check_script(in_msg):
+    code = str(in_msg["payload"])
+    try:
+        tree = ast.parse(code)
+    except SyntaxError as e:
+        return {"task_id": in_msg["task_id"],
+                "code": 1,
+                "info": str(e)}
 
     main_visitor = ScriptVisitor()
     main_visitor.visit(tree)
@@ -31,23 +36,27 @@ def check_script(file_name):
                 break
 
     if not names_variables:
-        set_error("Переменная name - не создана", out_file_path)
+        return new_out_msg(in_msg["user_id"], in_msg["task_id"],
+                           code=VAR_NOT_SET, info="name")
 
     if len(names_variables) != 1:
-        set_error("Переменная name - изменена", out_file_path)
+        return new_out_msg(in_msg["user_id"], in_msg["task_id"],
+                           code=VAR_CHANGED, info="name")
 
     name_variable = names_variables[0]
     name_variable_value = name_variable.value
 
     if not isinstance(name_variable_value, ast.Str):
-        set_error("Переменная name должна быть строкой", out_file_path)
+        return new_out_msg(in_msg["user_id"], in_msg["task_id"],
+                           code=VAR_REQ_TYPE_STR, info="name")
 
     if len(name_variable_value.s) < 2:
-        set_error("Переменная name должна содержать минимум 2 символа",
-                  "check_result.json")
+        return new_out_msg(in_msg["user_id"], in_msg["task_id"],
+                           code=VAR_REQ_LEN, info="name")
 
     if name_variable_value.s == "LearnPy":
-        set_error("Измените LearnPy на ваше имя", out_file_path)
+        return new_out_msg(in_msg["user_id"], in_msg["task_id"],
+                           code=VAR_NOT_CHANGED, info="LearnPy")
 
     is_print_call_with_name = False
     for call in calls:
@@ -73,6 +82,11 @@ def check_script(file_name):
                 break
 
     if not is_print_call_with_name:
-        set_error("Выведите переменную name с помощью print", out_file_path)
+        return new_out_msg(in_msg["user_id"], in_msg["task_id"],
+                           code=FUNC_NOT_CALLED, info="print")
 
-    set_success("Вы успешно выполнили упражнение", out_file_path)
+    out_msg = {"user_id": in_msg["user_id"],
+               "task_id": in_msg["task_id"],
+               "code": 0,
+               "info": ""}
+    return out_msg

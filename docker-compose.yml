@@ -6,8 +6,13 @@ services:
       - /watch_dir:/watch_dir:ro
       - /results:/results
       - /var/log/quarantine:/var/log/quarantine
-      - /var/run/quarantine:/var/run/quarantine
     depends_on:
       - redis
   redis:
     image: "redis:alpine"
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command:
+      - /usr/local/etc/redis/redis.conf
+    ports:
+      - "6379"

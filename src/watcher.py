@@ -6,9 +6,10 @@ import asyncio
 import aionotify
 
 sys.path.append(os.getcwd())  # Ugly workaround
+from src.helpers.reporting import new_in_msg
 from src.utils.config_manager import config
 from src.utils.log import logger
-from src.celery_app.tasks import check_code
+from src.celery_app.tasks import checkers
 
 if __name__ == '__main__':
     # Setup the watcher
@@ -26,7 +27,11 @@ if __name__ == '__main__':
         while True:
             event = await watcher.get_event()
             logger.debug(f"Captured event {event}")
-            check_code.delay(os.path.join(event.alias, event.name))
+            with open(os.path.join(event.alias, event.name)) as f:
+                user_code = f.read()
+                incoming = new_in_msg("1:python-1", user_code)
+                checker = checkers[incoming["task_id"]]
+                checker.delay(incoming)
 
 
     loop.run_until_complete(watch())
